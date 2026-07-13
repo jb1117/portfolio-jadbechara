@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jad Bechara — Product Portfolio</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #fafafa;
+      --surface2: #f4f4f5;
+      --border: #e4e4e7;
+      --accent: #18181b;
+      --accent2: #52525b;
+      --text: #09090b;
+      --muted: #71717a;
+      --tag-bg: #f4f4f5;
+    }
+    :root.dark {
+      --bg: #09090b;
+      --surface: #111113;
+      --surface2: #18181b;
+      --border: #27272a;
+      --accent: #e4e4e7;
+      --accent2: #a1a1aa;
+      --text: #fafafa;
+      --muted: #71717a;
+      --tag-bg: #18181b;
+      --nav-bg: rgba(9,9,11,0.92);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--nav-bg, rgba(255,255,255,0.92)); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 58px;
+    }
+    nav .logo { font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; }
+    nav .logo span { color: var(--accent2); }
+    nav .links { display: flex; gap: 1.4rem; }
+    nav .links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    nav .links a:hover { color: var(--text); }
+    .toggle-wrap {
+      display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none;
+    }
+    .toggle-wrap span { font-size: 0.75rem; color: var(--muted); }
+    .toggle-track {
+      width: 40px; height: 22px; border-radius: 100px;
+      background: var(--border); border: 1px solid var(--border);
+      position: relative; transition: background 0.25s;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .toggle-track.on { background: var(--accent); border-color: var(--accent); }
+    .toggle-thumb {
+      width: 16px; height: 16px; border-radius: 50%; background: #fff;
+      position: absolute; top: 2px; left: 2px;
+      transition: transform 0.25s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-track.on .toggle-thumb { transform: translateX(18px); }
+
+    /* HERO */
+    .hero { max-width: 1120px; margin: 0 auto; padding: 5.5rem 2rem 3.5rem; }
+    .badge { display: inline-block; background: var(--tag-bg); border: 1px solid var(--border); color: var(--accent2); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.28rem 0.7rem; border-radius: 100px; margin-bottom: 1.4rem; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.1rem; }
+    .grad { color: var(--accent); }
+    .hero p { font-size: 1.05rem; color: var(--muted); margin-bottom: 1.75rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1.4rem; font-size: 0.85rem; color: var(--muted); }
+    .hero-meta a { color: var(--accent2); text-decoration: none; }
+    .hero-meta a:hover { text-decoration: underline; }
+    .stats { display: flex; flex-direction: row; flex-wrap: nowrap; width: 100%; justify-content: space-between; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+    .stat { display: flex; flex-direction: column; gap: 0.2rem; flex-shrink: 0; }
+    .stat-n { display: block; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; }
+    .stat-l { display: block; font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+
+    /* SECTION */
+    .section { max-width: 1120px; margin: 0 auto; padding: 4rem 2rem 1rem; }
+    .section-head { margin-bottom: 2rem; }
+    .section-head h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+    .section-head p { color: var(--muted); font-size: 0.9rem; }
+
+    /* TAGS */
+    .tag { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 100px; border: 1px solid var(--border); color: var(--muted); background: var(--tag-bg); }
+    .tag.ai, .tag.mob, .tag.web, .tag.con, .tag.b2b, .tag.plat, .tag.game, .tag.ios, .tag.prod { color: var(--muted); border-color: var(--border); background: var(--tag-bg); }
+
+    /* PILL STACK */
+    .stack { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto; padding-top: 0.85rem; border-top: 1px solid var(--border); }
+    .pill { font-size: 0.68rem; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 0.18rem 0.45rem; border-radius: 5px; }
+
+    /* ── FLAGSHIP CARDS ── */
+    .flagship-grid { display: grid; gap: 1.5rem; }
+    .fc {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem;
+      display: grid; grid-template-columns: 1fr 260px; gap: 2rem;
+      position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s;
+    }
+    .fc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); opacity: 0; transition: opacity 0.2s; }
+    .fc:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .fc:hover::before { opacity: 1; }
+    .fc-left { display: flex; flex-direction: column; gap: 0.9rem; }
+    .fc-icon-row { display: flex; align-items: center; gap: 0.75rem; }
+    .fc-icon { width: 42px; height: 42px; border-radius: 11px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+    .fc-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
+    .fc-tagline { font-size: 0.83rem; color: var(--accent2); font-weight: 500; margin-top: -0.25rem; }
+    .fc-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.15rem; }
+    .desc { font-size: 0.835rem; color: var(--muted); line-height: 1.65; }
+    .fc-right { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; display: flex; flex-direction: column; gap: 0.55rem; }
+    .fc-right h4 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.1rem; }
+    .mrow { display: flex; justify-content: space-between; font-size: 0.8rem; }
+    .ml { color: var(--muted); }
+    .mv { font-weight: 700; color: var(--text); }
+    .divider { height: 1px; background: var(--border); }
+    @media (max-width: 680px) { .fc { grid-template-columns: 1fr; } }
+
+    /* ── STANDARD CARDS ── */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover { border-color: #4a4a6a; transform: translateY(-1px); }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .card-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .ctags { display: flex; flex-wrap: wrap; gap: 0.3rem; justify-content: flex-end; }
+    .card-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+    .card-tagline { font-size: 0.8rem; color: var(--accent2); font-weight: 500; }
+    .card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── COMPACT CARDS ── */
+    .compact {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.25rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      transition: border-color 0.2s;
+    }
+    .compact:hover { border-color: #4a4a6a; }
+    .compact-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+    .compact-left { display: flex; align-items: center; gap: 0.6rem; }
+    .c-icon { font-size: 1.1rem; }
+    .compact-title { font-size: 0.95rem; font-weight: 700; }
+    .compact-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .sk { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; }
+    .sk h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.65rem; }
+    .sk-items { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; margin-top: 4rem; }
+    footer h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+    footer p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.4rem; }
+    .clinks { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+    .btn-p { background: var(--accent); color: #fff; }
+    .btn-p:hover { background: var(--accent2); }
+    .btn-s { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-s:hover { border-color: var(--accent2); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Jad <span>Bechara</span></div>
+  <div class="links">
+    <a href="#flagship">Flagship</a>
+    <a href="#consumer">Consumer</a>
+    <a href="#ai-tools">AI Tools</a>
+    <a href="#platform">Platform</a>
+    <a href="#experimental">Experimental</a>
+    <a href="#skills">Skills</a>
+    <div class="toggle-wrap" onclick="toggleTheme()">
+      <span id="toggleLabel">Dark</span>
+      <div class="toggle-track" id="toggleTrack"><div class="toggle-thumb"></div></div>
+    </div>
+  </div>
+</nav>
+<script>
+  function toggleTheme() {
+    const root = document.documentElement;
+    const track = document.getElementById('toggleTrack');
+    const label = document.getElementById('toggleLabel');
+    if (root.classList.contains('dark')) {
+      root.classList.remove('dark');
+      track.classList.remove('on');
+      label.textContent = 'Dark';
+    } else {
+      root.classList.add('dark');
+      track.classList.add('on');
+      label.textContent = 'Light';
+    }
+  }
+</script>
+
+
+<div class="hero">
+  <div class="badge">Product Portfolio · 2024–2026</div>
+  <h1>Building <span class="grad">AI-native products</span> from zero to shipped.</h1>
+  <p>I build products and I ship them. In the last nine months I built 62 of them, nearly every line written with AI coding agents. Most were dead within a day, which was the point. Two are live: <strong>Whif</strong>, a consumer AI iOS app with 710 downloads and zero marketing spend, 93% from organic App Store search, and <strong>Brandcaster</strong>, a B2B AI content platform on web, iOS, and Android with its first paying annual subscriber. Before this, four years at PwC running multi-million-dollar Oracle Cloud transformations for Fortune 500 clients at the C-level.</p>
+  <div class="hero-meta">
+    <span><span class="material-icons" style="font-size:1rem;vertical-align:-3px;">location_on</span> Los Angeles, CA</span>
+    <a href="mailto:jadmbechara@gmail.com"><span class="material-icons" style="font-size:1rem;vertical-align:-3px;">mail</span> jadmbechara@gmail.com</a>
+    <a href="https://linkedin.com/in/jadmbechara" target="_blank"><span class="material-icons" style="font-size:1rem;vertical-align:-3px;">open_in_new</span> linkedin.com/in/jadmbechara</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="stat-n grad">62</span><span class="stat-l">Products built in 9 months</span></div>
+    <div class="stat"><span class="stat-n grad">2</span><span class="stat-l">Shipped and live</span></div>
+    <div class="stat"><span class="stat-n grad">93%</span><span class="stat-l">Organic App Store installs</span></div>
+    <div class="stat"><span class="stat-n grad">$0</span><span class="stat-l">Marketing spend</span></div>
+  </div>
+</div>
+
+<!-- FLAGSHIP -->
+<div class="section" id="flagship">
+  <div class="section-head">
+    <h2><span class="material-icons" style="font-size:1.2rem;vertical-align:-4px;margin-right:0.4rem;">rocket_launch</span>Flagship Projects</h2>
+    <p>Production-ready or App Store–released products with the deepest technical and product depth.</p>
+  </div>
+  <div class="flagship-grid">
+
+    <!-- WHIF AI -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">🌀</div>
+          <div><div class="fc-title">Whif AI</div><div class="fc-tagline">Decision Simulation Engine · Released on App Store</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag prod">Released</span><span class="tag mob">Mobile</span><span class="tag ai">AI</span></div>
+        <div><div class="label">Problem</div><div class="desc">People struggle to visualize the real-world consequences of a decision before making it — leading to regret, indecision, or overconfidence.</div></div>
+        <div><div class="label">Solution</div><div class="desc">TikTok-style feed of AI-generated "life scenarios" simulating what a decision might look like. Sora video + Gemini image + narrative text scenarios, personalized to the user, served in a swipeable feed for emotional clarity before committing.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">6-channel recommendation engine (Personalized, Explore, Similar-to-Liked, Global Winners, Cold Start, Contextual) with MMR diversity selection. Semantic dedup over exact-match to prevent repetitive feeds. LRU embedding cache achieving 37% latency reduction. Feature flags for gradual rollout.</div></div>
+        <div class="stack"><span class="pill">React Native</span><span class="pill">TypeScript</span><span class="pill">Supabase</span><span class="pill">OpenAI Embeddings</span><span class="pill">Sora</span><span class="pill">Gemini</span><span class="pill">Serverless</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>Product Metrics</h4>
+        <div class="mrow"><span class="ml">Feed latency target</span><span class="mv">&lt;200ms <span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">Latency reduction</span><span class="mv">37%</span></div>
+        <div class="mrow"><span class="ml">Rec channels</span><span class="mv">6</span></div>
+        <div class="mrow"><span class="ml">Status</span><span class="mv">Released · App Store</span></div>
+        <div class="divider"></div>
+        <h4>Architecture</h4>
+        <div class="desc" style="font-size:0.77rem;">Multimodal pipeline (video+image+text). Embedding semantic dedup. LRU cache. Feature-flagged rollout. 6-channel candidate orchestrator.</div>
+      </div>
+    </div>
+
+    <!-- BRANDCASTER -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">📣</div>
+          <div><div class="fc-title">Brandcaster AI</div><div class="fc-tagline">AI content studio · Released on iOS, Android & Web</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag prod">Released</span><span class="tag mob">Mobile</span><span class="tag web">Web</span><span class="tag b2b">B2B</span></div>
+        <div><div class="label">What it is</div><div class="desc">An AI content studio for your brand. Generate on-brand visuals up to 4K, retouch and enhance existing images, brainstorm post ideas and campaigns, write captions, schedule upcoming posts, and publish directly to connected social accounts — all from one app.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">Collapsing the full content workflow — ideation, creation, retouching, captioning, scheduling, publishing — into a single app so brand owners never context-switch between tools. 4K export quality closes the gap with professional design tools. Whether promoting a product, launching an offer, or staying consistent online, Brandcaster moves you from idea to post fast.</div></div>
+        <div class="stack"><span class="pill">iOS (App Store)</span><span class="pill">Android (Play Store)</span><span class="pill">Web (brandcaster.ai)</span><span class="pill">Image Gen</span><span class="pill">Video Gen</span><span class="pill">Social Scheduler</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>Platforms</h4>
+        <div class="mrow"><span class="ml">Web app</span><span class="mv">brandcaster.ai <span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">iOS</span><span class="mv">App Store <span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">Android</span><span class="mv">Play Store <span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="divider"></div>
+        <h4>Features</h4>
+        <div class="desc" style="font-size:0.77rem;">Generate visuals · Retouch images · Brainstorm campaigns · Write captions · Schedule posts · Publish to connected social accounts · Up to 4K quality.</div>
+      </div>
+    </div>
+
+    <!-- PLAYLIST AI -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">🎵</div>
+          <div><div class="fc-title">Playlist AI</div><div class="fc-tagline">One-tap playlist generator with deep taste modeling</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag ai">AI</span><span class="tag mob">Mobile</span></div>
+        <div><div class="label">What it is</div><div class="desc">Audio analysis engine extracting 30+ features per track (tempo, danceability, valence, spectral contrast, 512-dim OpenL3 embeddings) + clustering to model personal taste. One tap generates a curated playlist. Novelty slider adjusts the similarity weight (50%→30%) to balance discovery vs. familiarity. Exports to Apple Music.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">Cold start was the primary risk — solved with a pre-seeding pipeline that pulls Apple Music charts. Artist diversity penalty + previously-heard penalty + embedding similarity penalty in the ranking algorithm. Jobs table + Cloud Scheduler for async audio processing at scale.</div></div>
+        <div class="stack"><span class="pill">React Native</span><span class="pill">Python</span><span class="pill">OpenL3 Embeddings</span><span class="pill">Supabase</span><span class="pill">Apple Music API</span><span class="pill">Cloud Run</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>Technical Depth</h4>
+        <div class="mrow"><span class="ml">Audio features</span><span class="mv">30+</span></div>
+        <div class="mrow"><span class="ml">Embedding dims</span><span class="mv">512</span></div>
+        <div class="mrow"><span class="ml">Cold start fix</span><span class="mv">Chart pre-seed</span></div>
+        <div class="divider"></div>
+        <div class="desc" style="font-size:0.77rem;">Novelty slider shifts similarity weight 50%→30%. Diversity-aware ranking with artist, history, and embedding penalties.</div>
+      </div>
+    </div>
+
+    <!-- NETRIUM AI -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">🤖</div>
+          <div><div class="fc-title">Netrium AI</div><div class="fc-tagline">Multi-agent virtual office OS</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag ai">AI</span><span class="tag plat">Platform</span></div>
+        <div><div class="label">What it is</div><div class="desc">Multi-agent OS where specialized agents share a persistent memory layer. Supabase-triggered orchestration, long-term memory, conversation state, routing logic, and tool surfaces across one unified interface. Ships as iOS app, Electron desktop, camera app, voice agent, and phone call AI.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">Memory architecture: global episodic memory + agent-scoped working memory to prevent cross-contamination without siloing context. Each sub-product (NetriumCam, NetriumVoice, NetriumPhoneCall) is a standalone surface that feeds back into the shared context layer.</div></div>
+        <div class="stack"><span class="pill">Multi-Agent</span><span class="pill">Supabase</span><span class="pill">OpenAI</span><span class="pill">React Native</span><span class="pill">Electron</span><span class="pill">Python</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>Sub-Products</h4>
+        <div class="mrow"><span class="ml">NetriumApp</span><span class="mv">iOS agent</span></div>
+        <div class="mrow"><span class="ml">NetriumCam</span><span class="mv">AI camera</span></div>
+        <div class="mrow"><span class="ml">NetriumVoice</span><span class="mv">Voice agent</span></div>
+        <div class="mrow"><span class="ml">NetriumPhoneCall</span><span class="mv">Call AI</span></div>
+        <div class="mrow"><span class="ml">NetriumElectron</span><span class="mv">Desktop</span></div>
+      </div>
+    </div>
+
+    <!-- RECMATES -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">📡</div>
+          <div><div class="fc-title">RecMates</div><div class="fc-tagline">Trusted recommendation radar — web + React Native</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag ai">AI</span><span class="tag web">Web</span><span class="tag mob">Mobile</span></div>
+        <div><div class="label">What it is</div><div class="desc">Follow any creator (podcasts, YouTube, newsletters). RecMates parses transcripts, clusters recommendations by topic using embeddings, and surfaces only the actionable gems. Landing page copy: "Your personalized radar for trusted recommendations from creators you admire." Ships as both a web app and a production-ready Expo React Native mobile app.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">Beachhead: "super-followers" of specific creators — they already trust the source, so recommendation quality is assumed. Full pipeline: Transcript → Sentence Parsing → Embedding → Clustering → Recommendation Extraction → User Feed.</div></div>
+        <div class="stack"><span class="pill">React</span><span class="pill">Expo (React Native)</span><span class="pill">Python</span><span class="pill">Embeddings</span><span class="pill">Transcript Parsing</span><span class="pill">Supabase</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>Platforms</h4>
+        <div class="mrow"><span class="ml">Web app</span><span class="mv"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">React Native (Expo)</span><span class="mv"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="divider"></div>
+        <h4>Pipeline</h4>
+        <div class="desc" style="font-size:0.77rem;">Transcript → Parse → Embed → Cluster → Extract → Feed</div>
+      </div>
+    </div>
+
+    <!-- PINDROP -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">📍</div>
+          <div><div class="fc-title">PinDrop</div><div class="fc-tagline">AR digital time capsules at real-world locations</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag mob">Mobile</span><span class="tag con">Consumer</span></div>
+        <div><div class="label">What it is</div><div class="desc">Drop permanent AR pins at any GPS coordinate containing text, photos, or video. Pins unlock only when someone physically visits that exact spot. Color-coded by age: cyan (new &lt;7 days), yellow (recent &lt;30 days), red (months old), purple (years old — rare finds). Reply threads let visitors add to the pin's story over time.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">Privacy controls per pin: public / friends-only / specific people. Reply toggle on/off per pin. Mystery mode for anonymous messages with progressive identity reveal. Multi-card breadcrumb trails for gamified discovery. Unlock-based mechanic creates inherent virality — you have to physically visit to see it.</div></div>
+        <div class="stack"><span class="pill">React Native</span><span class="pill">AR</span><span class="pill">Mapbox</span><span class="pill">GPS</span><span class="pill">Supabase</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>Pin Types</h4>
+        <div class="mrow"><span class="ml">Text</span><span class="mv"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">Photo</span><span class="mv"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">Video</span><span class="mv"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="mrow"><span class="ml">Reply threads</span><span class="mv"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></span></div>
+        <div class="divider"></div>
+        <div class="desc" style="font-size:0.77rem;">Also built as native iOS app (Capsule) using ARKit + RealityKit + CoreLocation — the original prototype that preceded PinDrop.</div>
+      </div>
+    </div>
+
+    <!-- PERSONAL ERP -->
+    <div class="fc">
+      <div class="fc-left">
+        <div class="fc-icon-row">
+          <div class="fc-icon">🏢</div>
+          <div><div class="fc-title">Personal ERP</div><div class="fc-tagline">You are the CEO. AI runs your departments.</div></div>
+        </div>
+        <div class="fc-tags"><span class="tag ai">AI</span><span class="tag plat">Platform</span></div>
+        <div><div class="label">What it is</div><div class="desc">A multi-agent AI system that manages your life like a company. Each "department" is an AI agent: CFO (finance), CMO (personal brand), CTO (technology), COO (operations), CHRO (health), CSO (strategy). Meet them in a virtual boardroom, review their reports, make decisions, and let agents handle autonomous execution in their domains.</div></div>
+        <div><div class="label">Key PM Decisions</div><div class="desc">The boardroom metaphor solves AI fatigue — users have specialized advisors they consult on their terms rather than one monolithic assistant. Human-in-the-loop by design: agents propose, you decide. Framing the user as CEO creates psychological ownership and motivation to engage.</div></div>
+        <div class="stack"><span class="pill">Multi-Agent</span><span class="pill">Boardroom UI</span><span class="pill">OpenAI</span><span class="pill">Supabase</span><span class="pill">React Native</span></div>
+      </div>
+      <div class="fc-right">
+        <h4>AI Departments</h4>
+        <div class="mrow"><span class="ml">CFO</span><span class="mv">Finance</span></div>
+        <div class="mrow"><span class="ml">CMO</span><span class="mv">Personal brand</span></div>
+        <div class="mrow"><span class="ml">COO</span><span class="mv">Operations</span></div>
+        <div class="mrow"><span class="ml">CHRO</span><span class="mv">Health</span></div>
+        <div class="mrow"><span class="ml">CSO</span><span class="mv">Strategy</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONSUMER -->
+<div class="section" id="consumer">
+  <div class="section-head">
+    <h2><span class="material-icons" style="font-size:1.2rem;vertical-align:-4px;margin-right:0.4rem;">smartphone</span>Consumer Apps</h2>
+    <p>Mobile and web products built for everyday people.</p>
+  </div>
+  <div class="grid-3">
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎂</div><div class="ctags"><span class="tag ios">iOS</span></div></div>
+      <div class="card-title">BirthdayX</div>
+      <div class="card-tagline">Social birthday app with gift walls</div>
+      <div class="card-desc">Friends list with birthdays stored in Firebase. Each friend has a birthday wall where people can leave gift messages (text and video), react with likes, and post with their avatar. Confetti animations on birthdays. Phone auth via Firebase.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">SwiftUI</span><span class="pill">Firebase</span><span class="pill">AVKit</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">😊</div><div class="ctags"><span class="tag ios">iOS</span></div></div>
+      <div class="card-title">GlobalPulse</div>
+      <div class="card-tagline">Global mood feed — how is the world feeling right now?</div>
+      <div class="card-desc">Select your mood (happy, neutral, sad, angry) and hold to confirm. A 5-second circular progress indicator commits the mood. Once confirmed, a split animation reveals a live global feed showing what moods people around the world are logging in real time.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">SwiftUI</span><span class="pill">Supabase Realtime</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎤</div><div class="ctags"><span class="tag ios">iOS</span><span class="tag ai">AI</span></div></div>
+      <div class="card-title">HumToSong</div>
+      <div class="card-tagline">Record a hum — get a full AI-generated song</div>
+      <div class="card-desc">Record a melody by humming into the mic (AVAudioRecorder), upload the audio file to an AI backend, and receive a fully produced song generated from your hum. Also supports text command input for additional song direction before generation.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">AVFoundation</span><span class="pill">Audio AI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📌</div><div class="ctags"><span class="tag ios">iOS</span></div></div>
+      <div class="card-title">MyBoard (Kiss Cam Board)</div>
+      <div class="card-tagline">Virtual corkboard for draggable polaroid photos</div>
+      <div class="card-desc">iOS corkboard app where you capture photos and they appear as draggable polaroid-style cards on a corkboard background. Each polaroid has a caption and date. Drag and reposition photos freely. Tap the camera button to add new polaroids.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">SwiftUI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">⚙️</div><div class="ctags"><span class="tag ios">iOS</span></div></div>
+      <div class="card-title">LifeAutomation</div>
+      <div class="card-tagline">iOS mobile client for your n8n automation workflows</div>
+      <div class="card-desc">iOS app that connects to your n8n instance and lets you manage automation workflows and integrations on mobile. Browse active workflows with run counts and last-run timestamps, manage connected integrations, and trigger or monitor workflows from your phone.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">SwiftUI</span><span class="pill">n8n API</span><span class="pill">Combine</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎙️</div><div class="ctags"><span class="tag ios">iOS</span><span class="tag ai">AI</span></div></div>
+      <div class="card-title">ThePeopleHaveSpoken</div>
+      <div class="card-tagline">Real-time political fact-checker and topic analyzer</div>
+      <div class="card-desc">Two-tab iOS app: Fact Checker (uses Speech recognition + NLP to check political statements against major news sources: CNN, Fox, Reuters, Bloomberg, NYT, ABC) and Topic Analyzer (analyzes predefined topics like Climate Change, Healthcare, Economic Policies across multiple speakers including real political figures).</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">Speech Framework</span><span class="pill">NaturalLanguage</span><span class="pill">News APIs</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🧹</div><div class="ctags"><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">CleanedIt</div>
+      <div class="card-tagline">Household cleaning tracker with cleanliness scoring</div>
+      <div class="card-desc">React Native app that tracks cleaning items by category with live cleanliness levels: critical, overdue, due, good, fresh. Guided and rescue session modes to work through your backlog. Stats screen shows overall cleanliness score and total clean events. Firebase auth + cleaning service backend.</div>
+      <div class="stack"><span class="pill">React Native</span><span class="pill">TypeScript</span><span class="pill">Firebase</span><span class="pill">Material Icons</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">✏️</div><div class="ctags"><span class="tag ios">iOS</span><span class="tag ai">AI</span></div></div>
+      <div class="card-title">PowerPrompt</div>
+      <div class="card-tagline">iOS AI prompt engineer — polish your prompts</div>
+      <div class="card-desc">Input any AI prompt, select a tone and flavor, and the app sends it to an AI "professional prompt engineer" that returns an enhanced version. Sliding tab between Polish Prompt and Examples modes. Revert to original option. Dark gradient UI with haptic feedback.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">SwiftUI</span><span class="pill">OpenAI</span><span class="pill">AVFoundation</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🟢</div><div class="ctags"><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">SyncTime</div>
+      <div class="card-tagline">Intentional availability — manual status on your terms</div>
+      <div class="card-desc">React Native app with full dark/light component system. Manual availability toggle with mood signals (focus, chat, celebrate, vent) and custom status messages. Deliberately removes "last seen" — availability is a broadcast you control, not a surveillance layer.</div>
+      <div class="stack"><span class="pill">React Native</span><span class="pill">TypeScript</span><span class="pill">Custom Theme System</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📷</div><div class="ctags"><span class="tag mob">Mobile</span><span class="tag ai">AI</span></div></div>
+      <div class="card-title">CamCritique</div>
+      <div class="card-tagline">Point your camera — get instant AI critique</div>
+      <div class="card-desc">React Native camera app that uses AI vision to critique whatever you point it at. On-demand analysis (not continuous) so feedback feels deliberate. Gives structured feedback with improvement suggestions on spaces, objects, compositions, and more.</div>
+      <div class="stack"><span class="pill">React Native</span><span class="pill">Vision AI</span><span class="pill">Camera</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">💌</div><div class="ctags"><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">WhisperCard</div>
+      <div class="card-tagline">Physical QR cards bridging to digital messages</div>
+      <div class="card-desc">Buy physical cards with pre-printed QR codes. Attach text, voice notes, photos, or video to them digitally. Ephemeral self-destruct timers, mystery mode (anonymous with progressive identity reveal), secret admirer mode with clue trails, and multi-card breadcrumb experiences.</div>
+      <div class="stack"><span class="pill">React Native</span><span class="pill">Node.js</span><span class="pill">QR</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎥</div><div class="ctags"><span class="tag web">Web</span></div></div>
+      <div class="card-title">Third Eye</div>
+      <div class="card-tagline">Live streaming platform — experience the world through someone else's eyes</div>
+      <div class="card-desc">Real-time live streaming web app using Agora SDK. Create and host live POV experiences, join and watch streams, in-stream chat, front/back camera switching. Discovery feed for live and upcoming experiences. Also built as a React Native companion app.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">Agora SDK</span><span class="pill">Supabase</span><span class="pill">React Native</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🗺️</div><div class="ctags"><span class="tag ios">iOS</span></div></div>
+      <div class="card-title">Destination Roulette</div>
+      <div class="card-tagline">Spin for your next travel destination with Mapbox</div>
+      <div class="card-desc">iOS app with Mapbox integration that randomizes travel destinations. Built natively with a custom Mapbox Swift plugin (MapboxPlugin.swift + MapboxPlugin.m). Solves decision paralysis for travelers who want to discover somewhere new.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">Mapbox</span><span class="pill">SwiftUI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📅</div><div class="ctags"><span class="tag b2b">B2B</span><span class="tag web">Web</span></div></div>
+      <div class="card-title">Rez</div>
+      <div class="card-tagline">Multi-tenant booking SaaS for service businesses</div>
+      <div class="card-desc">Full-stack appointment booking platform. One user can belong to multiple businesses, each with their own locations, services, staff, customers, and payments. Role-based access (owner, admin, receptionist, staff). Invite system that auto-links pending memberships on signup. Supabase with row-level security.</div>
+      <div class="stack"><span class="pill">Supabase</span><span class="pill">TypeScript</span><span class="pill">Multi-tenant</span><span class="pill">RLS</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎮</div><div class="ctags"><span class="tag game">Game</span><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">SlingStop</div>
+      <div class="card-tagline">Mobile slingshot game with high score tracking</div>
+      <div class="card-desc">React Native slingshot game. Control a player that moves to a touch position, avoid or catch objects. Tracks and persists high score via AsyncStorage. Menu, playing, and game-over states.</div>
+      <div class="stack"><span class="pill">React Native</span><span class="pill">TypeScript</span><span class="pill">AsyncStorage</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎵</div><div class="ctags"><span class="tag ios">iOS</span><span class="tag ai">AI</span></div></div>
+      <div class="card-title">MelodyMixer</div>
+      <div class="card-tagline">iOS audio app with genre selection and pitch detection</div>
+      <div class="card-desc">iOS music app with a genre selection UI, real-time pitch detector, and audio processing engine. Users pick a genre, the app detects pitch from the microphone, and processes audio through the custom AudioEngine pipeline.</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">AVFoundation</span><span class="pill">Audio Engine</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🌐</div><div class="ctags"><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">Global Hugs</div>
+      <div class="card-tagline">Send anonymous digital hugs with messages and drawings worldwide</div>
+      <div class="card-desc">Send a hug (with optional message and drawing) to anywhere in the world. Supabase tracks sent and received hugs. Mapbox visualizes hug flows globally as animated lines between countries. History panels for sent and received. Accepts replies.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">Supabase</span><span class="pill">Mapbox</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎂</div><div class="ctags"><span class="tag b2b">B2B</span><span class="tag web">Web</span></div></div>
+      <div class="card-title">Yawmek</div>
+      <div class="card-tagline">Automated workplace celebrations across the Middle East</div>
+      <div class="card-desc">Delivers cakes and sweets to your team automatically for birthdays, work anniversaries, and milestones across GCC cities (Riyadh, Dubai, Doha). Yawmek (Arabic: your day) — automated workplace celebration logistics built for teams in the region.</div>
+      <div class="stack"><span class="pill">TanStack Start</span><span class="pill">TypeScript</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🏋️</div><div class="ctags"><span class="tag web">Web</span></div></div>
+      <div class="card-title">Body Blueprint</div>
+      <div class="card-tagline">Structured workout plan generator</div>
+      <div class="card-desc">Web app that generates structured weekly workout plans. Supports transformation types (e.g. cut), day-by-day splits (Push/Pull/Legs), and exercise lists with sets and reps (Bench Press 4x8-10, Overhead Press 3x8-10, etc.).</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📡</div><div class="ctags"><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">Social Recommendations (iOS)</div>
+      <div class="card-tagline">Native iOS prototype of the RecMates concept — with pitch deck</div>
+      <div class="card-desc">The original iOS native version of RecMates built in Swift. Feed view, category carousel, detailed profile view, and add-recommendation flow. Includes two full pitch decks (Recmates_Pitch_Deck_Final_Fixed.pptx and Social_Recommendations_Pitch_Deck_Updated.pptx).</div>
+      <div class="stack"><span class="pill">iOS (Swift)</span><span class="pill">SwiftUI</span><span class="pill">Firebase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🚭</div><div class="ctags"><span class="tag web">Web</span><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">VapeCounter</div>
+      <div class="card-tagline">Vape usage tracker for cessation</div>
+      <div class="card-desc">Web-based vape usage tracker (vape-counter.html) and a React Native companion app. Log sessions, track reduction over time, and monitor progress toward quitting.</div>
+      <div class="stack"><span class="pill">HTML/JS</span><span class="pill">React Native</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🔷</div><div class="ctags"><span class="tag web">Web</span></div></div>
+      <div class="card-title">Aura Reserve</div>
+      <div class="card-tagline">Service booking marketplace — customers and businesses</div>
+      <div class="card-desc">Booking marketplace where users sign up as a customer immediately and can optionally add a business later. Browse services by category and location, book appointments, manage availability. Business tools built into the same account.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Supabase</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- AI TOOLS -->
+<div class="section" id="ai-tools">
+  <div class="section-head">
+    <h2><span class="material-icons" style="font-size:1.2rem;vertical-align:-4px;margin-right:0.4rem;">psychology</span>AI Tools & Utilities</h2>
+    <p>Purpose-built AI tools solving specific workflow and creative problems.</p>
+  </div>
+  <div class="grid-3">
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📈</div><div class="ctags"><span class="tag ai">AI</span><span class="tag web">Web</span></div></div>
+      <div class="card-title">MarketWatcher AI</div>
+      <div class="card-tagline">Stock and crypto dashboard with news and social sentiment</div>
+      <div class="card-desc">React web dashboard for tracking stocks and crypto. Price charts using Yahoo Finance data with configurable time ranges. News sentiment panel (positive/negative/neutral per article). Social sentiment panel from platforms. Asset search (stocks + crypto). Starts with AAPL as default asset.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Yahoo Finance</span><span class="pill">Perplexity API</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🔔</div><div class="ctags"><span class="tag ai">AI</span><span class="tag plat">Platform</span></div></div>
+      <div class="card-title">Nottie</div>
+      <div class="card-tagline">Context-aware AI notification engine</div>
+      <div class="card-desc">Rule parser + source resolver that evaluates user context before deciding whether to deliver a notification. Serverless execution pipeline with feed validation and context triggers. Built as both a web service and a React Native mobile app (notify-ai-whisper).</div>
+      <div class="stack"><span class="pill">Serverless</span><span class="pill">Rule Engine</span><span class="pill">Supabase</span><span class="pill">React Native</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🥘</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">Code Pantry</div>
+      <div class="card-tagline">AI component discovery & catalog for AI builders</div>
+      <div class="card-desc">Continuously scans your AI-generated project folders, intelligently extracts reusable components (auth, Supabase setup, integrations), and catalogs them so you never rebuild the same thing. Supports local gpt-oss-20b or cloud AI for analysis. Tracks usage across projects and suggests new project ideas from component combinations.</div>
+      <div class="stack"><span class="pill">Next.js</span><span class="pill">AI Analysis</span><span class="pill">Local LLM</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">⚙️</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">UltimateCoder</div>
+      <div class="card-tagline">Autonomous app generator — two-phase architecture</div>
+      <div class="card-desc">Two-phase build: intensive front-loaded Q&A Discovery Phase (PM agent, designer agent, engineer agent gathering all requirements) followed by fully autonomous Execution Phase with zero back-and-forth. Type-safe project spec system, real-time progress tracking, robust error recovery.</div>
+      <div class="stack"><span class="pill">Multi-Agent</span><span class="pill">TypeScript</span><span class="pill">OpenAI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📄</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">Resume Tailor</div>
+      <div class="card-tagline">AI resume alignment studio</div>
+      <div class="card-desc">Upload your resume, paste a job description or provide a URL. AI parses the resume, fetches and analyzes the job, then tailors your resume to match — adjusting language and emphasis for each application. Demo mode available. Built with TanStack Start.</div>
+      <div class="stack"><span class="pill">TanStack Start</span><span class="pill">TypeScript</span><span class="pill">OpenAI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🌐</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">Universalizer</div>
+      <div class="card-tagline">AI SaaS localization platform</div>
+      <div class="card-desc">Targets the $6.27B software localization market (growing 11.8% CAGR). Traditional SaaS localization costs $10k–50k per language. Universalizer brings that near zero with AI. Full market research analysis completed (competitor pricing, segments, GTM) plus SaaS UI spec.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">OpenAI</span><span class="pill">Localization API</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🔄</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">n8n Generator</div>
+      <div class="card-tagline">AI-powered n8n workflow generator</div>
+      <div class="card-desc">Generates n8n automation workflows from plain-English descriptions. Outputs ready-to-import JSON with proper node configuration. Targets non-technical business owners who want automations but can't build n8n graphs manually.</div>
+      <div class="stack"><span class="pill">n8n</span><span class="pill">OpenAI</span><span class="pill">JSON Generation</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎙️</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">Interview Buddy</div>
+      <div class="card-tagline">AI voice interview simulator — practice with "Sarah"</div>
+      <div class="card-desc">Set up company, role, job description, and interview type (phone screening, behavioral, technical). AI avatar "Sarah" conducts a live voice call — speaking and listening in turns. Feedback screen after each session. History and profile tracking built in.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">Voice AI</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🏗️</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">Idea to App Studio</div>
+      <div class="card-tagline">Autonomous app builder simulator</div>
+      <div class="card-desc">Simulates the full app-building pipeline in real time: Analyze Requirements → Design UI/UX → First Pass (core features) → Second Pass (polish) → Testing & QA → Optimization → Package for iOS & Android stores. Generates store-ready assets checklist (bundle ID, icons, screenshots, privacy policy, ratings).</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">📣</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">Marketing Genius AI</div>
+      <div class="card-tagline">AI social media content calendar and analytics</div>
+      <div class="card-desc">Content calendar with AI-generated posts (status: ai-generated → in review → scheduled → published). Analytics dashboard with per-metric trend charts. Weekly view across days of the week for scheduling visibility.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">OpenAI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">💡</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">ClarityCards</div>
+      <div class="card-tagline">Break confusing things into reframe cards</div>
+      <div class="card-desc">Input any confusing concept, decision, or situation. The app breaks it into structured "reframe cards" — different angles, perspectives, and clarity frames to help you think through it. Built with TanStack Start.</div>
+      <div class="stack"><span class="pill">TanStack Start</span><span class="pill">TypeScript</span><span class="pill">OpenAI</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🚀</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">Opportuna</div>
+      <div class="card-tagline">Exclusive business opportunity marketplace</div>
+      <div class="card-desc">Marketplace for curated business opportunity packs. Preview the idea, pay a small fee to claim it, then unlock the full research and 30-day launch plan. Each opportunity is sold to exactly one founder and removed once claimed. "Claim once, build fast."</div>
+      <div class="stack"><span class="pill">TanStack Start</span><span class="pill">TypeScript</span><span class="pill">Stripe</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🧭</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">Community Compass</div>
+      <div class="card-tagline">Community management platform — inbox, approvals, automations</div>
+      <div class="card-desc">Multi-channel community management tool with inbox (conversations), approvals queue (pending + escalated), automations, analytics, and connected social accounts. Badge count on approvals tab shows live pending items.</div>
+      <div class="stack"><span class="pill">TanStack Start</span><span class="pill">TypeScript</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🎙️</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">Zoom AI Assistant</div>
+      <div class="card-tagline">Python AI assistant with email monitoring and Zoom integration</div>
+      <div class="card-desc">Python + Flask server that monitors Gmail, connects to Zoom, and handles meeting-related tasks. Files: app.py, email_monitor.py, flask_server.py, credentials.json integration. Extracts meeting context and action items.</div>
+      <div class="stack"><span class="pill">Python</span><span class="pill">Flask</span><span class="pill">Zoom API</span><span class="pill">Gmail API</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🖥️</div><div class="ctags"><span class="tag ai">AI</span></div></div>
+      <div class="card-title">Sentiment Market</div>
+      <div class="card-tagline">Electron desktop app for sentiment analysis</div>
+      <div class="card-desc">Desktop Electron app for sentiment analysis. Launches a 1200×800 browser window loading a local HTML interface. Built for running sentiment analysis workflows as a native desktop experience.</div>
+      <div class="stack"><span class="pill">Electron</span><span class="pill">Node.js</span><span class="pill">HTML/JS</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PLATFORM -->
+<div class="section" id="platform">
+  <div class="section-head">
+    <h2><span class="material-icons" style="font-size:1.2rem;vertical-align:-4px;margin-right:0.4rem;">corporate_fare</span>Platform & B2B</h2>
+    <p>Products targeting businesses, marketplaces, and professional workflows.</p>
+  </div>
+  <div class="grid-3">
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🇱🇧</div><div class="ctags"><span class="tag ai">AI</span><span class="tag web">Web</span></div></div>
+      <div class="card-title">Classifieds Lebanon</div>
+      <div class="card-tagline">Modern AI-powered classifieds platform for Lebanon</div>
+      <div class="card-desc">AI-powered classifieds platform purpose-built for the Lebanese market — addressing gaps in search quality, trust, and mobile experience that existing platforms don't serve.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">AI Search</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🇲🇽</div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">Mercado Inteligente</div>
+      <div class="card-tagline">AI-powered B2B marketplace for Mexico</div>
+      <div class="card-desc">B2B marketplace for the Mexican market with AI-powered supplier matching and procurement workflow automation. Targets the large informal B2B commerce market in LatAm that lacks digital infrastructure.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Supabase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🏠</div><div class="ctags"><span class="tag web">Web</span></div></div>
+      <div class="card-title">Real Estate App</div>
+      <div class="card-tagline">Electron desktop app for real estate listings</div>
+      <div class="card-desc">Desktop Electron app for real estate agents to manage listings and compare properties. Offline-first architecture for working during property visits without internet.</div>
+      <div class="stack"><span class="pill">Electron</span><span class="pill">React</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🛠️</div><div class="ctags"><span class="tag b2b">B2B</span><span class="tag mob">Mobile</span></div></div>
+      <div class="card-title">ServicePlus</div>
+      <div class="card-tagline">Restaurant table service request app</div>
+      <div class="card-desc">Customers select their table number to request service from staff. Table selection screen, table status display, and a dedicated table view per session. Deployed on Vercel.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">JavaScript</span><span class="pill">Vercel</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon">🏆</div><div class="ctags"><span class="tag web">Web</span></div></div>
+      <div class="card-title">ARCHIF (Vintage E-Commerce)</div>
+      <div class="card-tagline">Production-ready luxury vintage goods e-commerce</div>
+      <div class="card-desc">Fully-featured e-commerce platform for high-end vintage luxury goods. Minimalist design inspired by archif.co. Built production-ready with full checkout flow, product pages, and authentication.</div>
+      <div class="stack"><span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Stripe</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><div class="card-icon"><span class="material-icons" style="font-size:0.95rem;vertical-align:-2px;color:var(--accent);">check_circle</span></div><div class="ctags"><span class="tag ai">AI</span><span class="tag b2b">B2B</span></div></div>
+      <div class="card-title">QA Master AI</div>
+      <div class="card-tagline">Autonomous terminal monitor and QA agent</div>
+      <div class="card-desc">Python terminal monitoring agent (terminal_monitor.py) that watches application output, detects errors and anomalies, and surfaces actionable QA reports. Runs alongside development environments and flags regressions automatically.</div>
+      <div class="stack"><span class="pill">Python</span><span class="pill">Terminal Monitoring</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPERIMENTAL -->
+<div class="section" id="experimental">
+  <div class="section-head">
+    <h2><span class="material-icons" style="font-size:1.2rem;vertical-align:-4px;margin-right:0.4rem;">science</span>Experimental & Games</h2>
+    <p>Smaller experiments, games, and creative builds.</p>
+  </div>
+  <div class="grid-4">
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🪐</span><span class="compact-title">Orbit Game (Simple Fun Forever)</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">Mobile arcade game with procedurally generated asteroid-shaped rocks (seeded random path generation). RevenueCat in-app purchases, Game Center leaderboard, App Tracking Transparency. Playable on iOS via Capacitor.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🎯</span><span class="compact-title">Viral Vortex</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">Mobile orb-collection game with gold, rainbow, and special orbs. Difficulty levels, daily challenges (with modifiers: double speed, tiny orbs, giant orbs, gold only), skin shop with RevenueCat, high score tracking per difficulty, Game Center.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🚕</span><span class="compact-title">Dash Dodge</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">3D Crazy Taxi-style endless runner. Swipe left/right to change lanes, swipe up or tap to jump. Touch controls with gesture detection. Move left, right, jump mechanics built in React with Three.js-style 3D rendering.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">⌨️</span><span class="compact-title">Typing Multiplayer Racing</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">Real-time multiplayer typing race game in React Native. Race others to type passages fastest, live WPM tracking and position updates.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🥁</span><span class="compact-title">SyncTap (Hooked Play)</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">Rhythm-based timing game. Tap when an expanding ring aligns with the target circle. Tests precision and reaction time with increasing difficulty.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🎰</span><span class="compact-title">Finger Spin Fortune</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">Vite web app with a Capacitor iOS shell for running on iPhone. Spin wheel with randomized fortune outcomes.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🐾</span><span class="compact-title">Pup Predictor</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">Dog ownership simulator. Simulates real events: 3AM wake-up calls, carpet accidents, walks. Tracks needs met %, accidents cleaned, days completed, times ignored. Onboarding with real-time or accelerated simulation modes.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🌌</span><span class="compact-title">Dream Weaver</span></div>
+        <div class="ctags"><span class="tag con">Consumer</span></div>
+      </div>
+      <div class="compact-desc">Immersive alternate-life experience app. "Dimensions" like Billionaire Week ("What does unlimited money actually feel like?"), Celebrity, Athlete, Prison — each with day-by-day episodes you unlock and watch. Like a serialized interactive story.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🧹</span><span class="compact-title">Sparkle Tracker</span></div>
+        <div class="ctags"><span class="tag web">Web</span></div>
+      </div>
+      <div class="compact-desc">Web cleaning tracker with item categories (kitchen, bathroom, bedroom, personal, living), cleanliness statuses (clean, due-soon, overdue, unstarted), cleaning packs/starter bundles, and achievements. Supabase backend.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🎮</span><span class="compact-title">BalancingModel</span></div>
+        <div class="ctags"><span class="tag game">Game</span></div>
+      </div>
+      <div class="compact-desc">iOS SpriteKit game. Control a blue square by dragging your finger, interact with a red object on screen. Simple physics-based prototype built with SpriteKit + GameViewController.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">🗺️</span><span class="compact-title">Wander Frame</span></div>
+        <div class="ctags"><span class="tag con">Consumer</span></div>
+      </div>
+      <div class="compact-desc">Travel experience discovery app. Browse experiences as cards with titles, descriptions, and hero images. Large featured card format with secondary experience grid.</div>
+    </div>
+
+    <div class="compact">
+      <div class="compact-top">
+        <div class="compact-left"><span class="c-icon">📦</span><span class="compact-title">Autopilot Ventures</span></div>
+        <div class="ctags"><span class="tag b2b">B2B</span></div>
+      </div>
+      <div class="compact-desc">Business approvals and owner request management platform. Pending/approved/rejected request queue with amounts, urgency levels, and kind labels. Approve or reject with full context panel.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section" id="skills">
+  <div class="section-head">
+    <h2><span class="material-icons" style="font-size:1.2rem;vertical-align:-4px;margin-right:0.4rem;">build</span>Skills & Stack</h2>
+    <p>What I bring to a product team — PM discipline combined with hands-on technical execution.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="sk"><h4>Product</h4><div class="sk-items"><span class="pill">0→1 Ownership</span><span class="pill">Prototyping</span><span class="pill">UX/UI</span><span class="pill">Prioritization</span><span class="pill">Pricing &amp; Monetization</span><span class="pill">App Store &amp; Play Store Release</span><span class="pill">Funnel &amp; Cohort Analysis</span><span class="pill">Experimentation</span></div></div>
+    <div class="sk"><h4>AI & Technical</h4><div class="sk-items"><span class="pill">GenAI Workflows</span><span class="pill">Prompt Engineering</span><span class="pill">Model Integration</span><span class="pill">API Integrations</span><span class="pill">Web/iOS Delivery</span><span class="pill">Technical Tradeoffs</span><span class="pill">Supabase</span><span class="pill">Firebase</span><span class="pill">Vertex AI</span></div></div>
+    <div class="sk"><h4>Enterprise (PwC)</h4><div class="sk-items"><span class="pill">Oracle Cloud ERP/EPM/HCM</span><span class="pill">Fortune 500 Clients</span><span class="pill">100+ Stakeholders</span><span class="pill">Stakeholder Management</span><span class="pill">Executive Communication</span><span class="pill">Program Delivery</span></div></div>
+    <div class="sk"><h4>Tools</h4><div class="sk-items"><span class="pill">Claude Code</span><span class="pill">Codex</span><span class="pill">Cursor</span><span class="pill">Figma</span><span class="pill">VS Code</span></div></div>
+    <div class="sk"><h4>Languages</h4><div class="sk-items"><span class="pill">English</span><span class="pill">French</span><span class="pill">Arabic</span></div></div>
+    <div class="sk"><h4>Education</h4><div class="sk-items"><span class="pill">MS Business Analytics · IE Business School · 3.55 GPA</span><span class="pill">BS Business & Finance · LAU · 3.71 GPA (Distinction)</span></div></div>
+  </div>
+</div>
+
+<footer id="contact">
+  <h3>Let's talk product.</h3>
+  <p>Open to PM roles where I can architect, iterate, and ship at high velocity.</p>
+  <div class="clinks">
+    <a href="mailto:jadmbechara@gmail.com" class="btn btn-p"><span class="material-icons" style="font-size:1rem;vertical-align:-3px;margin-right:4px;">mail</span>jadmbechara@gmail.com</a>
+    <a href="https://linkedin.com/in/jadmbechara" target="_blank" class="btn btn-s">LinkedIn →</a>
+  </div>
+</footer>
+
+</body>
+</html>
