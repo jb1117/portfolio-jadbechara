@@ -1,0 +1,164 @@
+.flagship-list {
+  display: grid;
+  gap: 26px;
+}
+
+.flagship-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: 24px;
+  border: 1px solid rgba(16, 17, 20, 0.11);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.flagship-main,
+.standard-card,
+.compact-product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title-row,
+.standard-top,
+.compact-product-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.product-title-row h3,
+.standard-card h3,
+.compact-product-card h3 {
+  margin-bottom: 4px;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.product-title-row p,
+.tagline {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 760;
+  line-height: 1.45;
+}
+
+.detail-block {
+  margin-top: 18px;
+}
+
+.detail-block strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.detail-block p,
+.standard-card p,
+.compact-product-card p,
+.side-section p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.64;
+}
+
+.flagship-side {
+  display: grid;
+  align-self: start;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfaf6;
+  padding: 18px;
+}
+
+.side-section + .side-section {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.side-section h4 {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.side-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.side-row strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink);
+  text-align: right;
+}
+
+.side-row svg {
+  color: var(--accent);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.standard-card,
+.compact-product-card {
+  min-height: 100%;
+  border: 1px solid rgba(16, 17, 20, 0.11);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 18px;
+}
+
+.standard-top {
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.standard-card .tagline {
+  margin-bottom: 10px;
+}
+
+.standard-card .compact-tags {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.compact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.compact-product-top {
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.compact-product-top h3 {
+  flex: 1 1 150px;
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 980px) {
+  .flagship-card,
+  .product-grid,
+  .compact-grid {
+    grid-template-columns: 1fr;
+  }
+}

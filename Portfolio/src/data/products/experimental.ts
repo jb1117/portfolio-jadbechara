@@ -1,0 +1,16 @@
+import type { CompactProduct } from "./types";
+
+export const experimentalProducts: CompactProduct[] = [
+  {"icon":"🪐","tags":["Game"],"title":"Orbit Game (Simple Fun Forever)","description":"Mobile arcade game with procedurally generated asteroid-shaped rocks (seeded random path generation). RevenueCat in-app purchases, Game Center leaderboard, App Tracking Transparency. Playable on iOS via Capacitor."},
+  {"icon":"🎯","tags":["Game"],"title":"Viral Vortex","description":"Mobile orb-collection game with gold, rainbow, and special orbs. Difficulty levels, daily challenges (with modifiers: double speed, tiny orbs, giant orbs, gold only), skin shop with RevenueCat, high score tracking per difficulty, Game Center."},
+  {"icon":"🚕","tags":["Game"],"title":"Dash Dodge","description":"3D Crazy Taxi-style endless runner. Swipe left/right to change lanes, swipe up or tap to jump. Touch controls with gesture detection. Move left, right, jump mechanics built in React with Three.js-style 3D rendering."},
+  {"icon":"⌨️","tags":["Game"],"title":"Typing Multiplayer Racing","description":"Real-time multiplayer typing race game in React Native. Race others to type passages fastest, live WPM tracking and position updates."},
+  {"icon":"🥁","tags":["Game"],"title":"SyncTap (Hooked Play)","description":"Rhythm-based timing game. Tap when an expanding ring aligns with the target circle. Tests precision and reaction time with increasing difficulty."},
+  {"icon":"🎰","tags":["Game"],"title":"Finger Spin Fortune","description":"Vite web app with a Capacitor iOS shell for running on iPhone. Spin wheel with randomized fortune outcomes."},
+  {"icon":"🐾","tags":["Game"],"title":"Pup Predictor","description":"Dog ownership simulator. Simulates real events: 3AM wake-up calls, carpet accidents, walks. Tracks needs met %, accidents cleaned, days completed, times ignored. Onboarding with real-time or accelerated simulation modes."},
+  {"icon":"🌌","tags":["Consumer"],"title":"Dream Weaver","description":"Immersive alternate-life experience app. \"Dimensions\" like Billionaire Week (\"What does unlimited money actually feel like?\"), Celebrity, Athlete, Prison - each with day-by-day episodes you unlock and watch. Like a serialized interactive story."},
+  {"icon":"🧹","tags":["Web"],"title":"Sparkle Tracker","description":"Web cleaning tracker with item categories (kitchen, bathroom, bedroom, personal, living), cleanliness statuses (clean, due-soon, overdue, unstarted), cleaning packs/starter bundles, and achievements. Supabase backend."},
+  {"icon":"🎮","tags":["Game"],"title":"BalancingModel","description":"iOS SpriteKit game. Control a blue square by dragging your finger, interact with a red object on screen. Simple physics-based prototype built with SpriteKit + GameViewController."},
+  {"icon":"🗺️","tags":["Consumer"],"title":"Wander Frame","description":"Travel experience discovery app. Browse experiences as cards with titles, descriptions, and hero images. Large featured card format with secondary experience grid."},
+  {"icon":"📦","tags":["B2B"],"title":"Autopilot Ventures","description":"Business approvals and owner request management platform. Pending/approved/rejected request queue with amounts, urgency levels, and kind labels. Approve or reject with full context panel."},
+];
